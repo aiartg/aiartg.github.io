@@ -385,12 +385,12 @@
       .lb-imgs { display: flex; gap: 8px; margin-top: 10px; }
       .lb-imgs[hidden] { display: none; }
       .lb-imgs .lb-btn.on { background: #dcba67; border-color: #dcba67; color: #241a05; font-weight: 700; }
-      /* 多图翻页箭头：压在图片左右两侧，悬停图片区域才显形 */
+      /* 多图翻页：箭头按钮全端隐藏，统一靠点图片左右区域翻页（下方图号按钮亦可切换） */
       .lb-stage { position: relative; }
       .lb-arrow {
         position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
         width: 46px; height: 46px; padding: 0; border-radius: 50%;
-        display: grid; place-items: center;
+        display: none; place-items: center;
         background: rgba(13, 10, 5, 0.52); color: #f0e6cc;
         border: 1px solid rgba(240, 230, 205, 0.42);
         opacity: 0; pointer-events: none;
@@ -400,10 +400,25 @@
       .lb-arrow.next { right: 12px; }
       .lb-arrow svg { width: 20px; height: 20px; }
       .lb-arrow:hover { background: #dcba67; border-color: #dcba67; color: #241a05; }
-      .lb-stage:hover .lb-arrow, .lb-stage:focus-within .lb-arrow { opacity: 1; pointer-events: auto; }
+      /* 箭头全端隐藏：悬停/聚焦也不再显形，翻页走 .lb-tap 点按区 */
       .lb-arrow[hidden] { display: none; }
+      /* 点按翻页区：图片左右两侧的隐形区域，点左上一张、点右下一张 */
+      .lb-tap {
+        position: absolute; top: 0; bottom: 0; width: 38%; z-index: 2;
+        cursor: pointer; -webkit-tap-highlight-color: transparent;
+      }
+      .lb-tap.prev { left: 0; }
+      .lb-tap.next { right: 0; }
+      .lb-tap[hidden] { display: none; }
       @media (hover: none) {
-        .lb-arrow { opacity: 0.88; pointer-events: auto; }
+        /* 触屏：箭头同样隐藏，只靠点左右区域翻页 */
+        .lb-arrow {
+          width: 32px; height: 32px; opacity: 0; pointer-events: none;
+          background: rgba(13, 10, 5, 0.38); border-color: rgba(240, 230, 205, 0.3);
+        }
+        .lb-arrow svg { width: 15px; height: 15px; }
+        .lb-arrow.prev { left: 8px; }
+        .lb-arrow.next { right: 8px; }
       }
       .lightbox img {
         width: 100%; max-height: calc(100dvh - 168px); object-fit: contain;
@@ -571,6 +586,8 @@
           <div class="lb-imgwrap">
             <div class="lb-stage">
               <img id="lbImg" src="img/2108215971517530364-1.jpg" alt="" loading="lazy" decoding="async" />
+              <div class="lb-tap prev" id="lbTapPrev" aria-hidden="true" hidden></div>
+              <div class="lb-tap next" id="lbTapNext" aria-hidden="true" hidden></div>
               <button class="lb-arrow prev" type="button" id="lbImgPrev" aria-label="上一张图" hidden>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 5 8 12l6.5 7" /></svg>
               </button>
@@ -604,6 +621,50 @@
 
     <script>
       var WORKS = [
+        {
+          src: "img/2110347731126595920-1.jpg",
+          width: 1672, height: 940,
+          alt: "古风闺房中女子背对镜头坐在雕花木床上，乌发以白色花发夹束起，透明白色蕾丝纱裙滑落肩头，阳光透过木格窗与刺绣纱帘洒入，粉色花朵散落",
+          title: "古风闺房美背",
+          cat: "portrait", catName: "人物系列",
+          desc: "哦豁豁，感谢 @Sirilee2026 分享这么神奇的提示词！（提示词来自 @Sirilee2026 的分享帖）",
+          prompt: "正面提示词\n\n杰作，最佳品质，8K，超详细，电影摄影，美丽年轻中国女性的背影，头发用白色花发夹束起，纤细裸露的背部，透明白色蕾丝纱裙，坐在古老中国雕花木床上，半透明刺绣顶篷窗帘，古董闺房内部，木格窗户，柔和自然阳光洒入，散落的粉色花朵，柔和薄雾，梦幻氛围，浅景深，温暖柔和色调\n\n负面提示词\n\n丑陋，畸形，模糊，糟糕解剖，毁容，多余肢体，变异，低分辨率，文字，水印，标志，UI，按钮，刺眼阴影，过饱和16:9",
+          post: "https://x.com/sandmrk/status/2110347731126595920"
+        },
+        {
+          src: "img/2110310796500873308-1.jpg",
+          srcs: ["img/2110310796500873308-1.jpg", "img/2110310796500873308-2.jpg"],
+          width: 1024, height: 1536,
+          alt: "凤凰女神半身肖像，华丽古代发髻饰以金色发饰与珍珠流苏，奶油色羽毛服饰，身后凤凰探首，绿蓝红金彩虹色凤凰羽毛环绕",
+          alts: ["凤凰女神半身肖像，华丽古代发髻饰以金色发饰与珍珠流苏，奶油色羽毛服饰，身后凤凰探首，绿蓝红金彩虹色凤凰羽毛环绕", "凤凰苏醒第二幅：女神侧身回眸浅笑，额间花钿，金色凤冠与长流苏耳饰，凤凰立于身后高处，羽毛在空中漂浮"],
+          title: "凤凰苏醒",
+          cat: "portrait", catName: "人物系列",
+          desc: "GPT的效果不一样呢！感谢提示词哦（提示词来自 @Sirilee2026 的凤凰神女分享帖）",
+          prompt: "正面提示词：\n\n照片级电影镜头，惊艳的古代中国凤凰女神的半身肖像，柔和温柔的微笑，精致的面部特征，深色头发盘成奢华复杂的古代中国发髻，饰以华丽的金色发饰和悬垂的珍珠流苏，长长的金色流苏项链，薄如蝉翼的奶油色羽毛服饰，周围环绕着无数蓬松的凤凰羽毛，绿、蓝、红和金色的彩虹色凤凰羽毛，空气中细微漂浮的尘埃颗粒，柔和的边缘光，朦胧梦幻的氛围，细微的画家质感，浅景深，柔和的背景虚化，戏剧性的柔和背光，超详细的皮肤纹理，复杂的羽毛细节，史诗般的东方奇幻美学，8k，原始照片\n\n负面提示词：\n\n丑陋，畸形，模糊，糟糕的解剖结构，毁容，面具，面部遮盖，生硬静态姿势，塑料皮肤，卡通，动漫，插图，水印，文字，签名，过饱和，额外肢体",
+          post: "https://x.com/sandmrk/status/2110310796500873308"
+        },
+        {
+          src: "img/2110280131164135832-1.jpg",
+          srcs: ["img/2110280131164135832-1.jpg", "img/2110280131164135832-2.jpg"],
+          width: 1672, height: 941,
+          alt: "朱红巨型东方灵鱼自画面右上方探入青白色水下虚空，鱼身布满青蓝色发光裂纹，画面底部中央渺小的古风旅人抬手仰望巨鱼",
+          alts: ["朱红巨型东方灵鱼自画面右上方探入青白色水下虚空，鱼身布满青蓝色发光裂纹，画面底部中央渺小的古风旅人抬手仰望巨鱼", "不小心变锦鲤了第二幅：红白巨鱼低垂着头靠近水面，青蓝灵脉沿鳞片蔓延，底部旅人剪影立于细长地平线上抬手致意"],
+          title: "不小心变锦鲤了",
+          cat: "portrait", catName: "人物系列",
+          desc: "其实我想做金鱼的，不小心变锦鲤了",
+          prompt: "提示词16:9 横版，1536×864 构图，单幅完整画面，无拼图，无边框，无文字，无水印，无LOGO。\n\n【画面主题与整体风格】\n\n东方玄幻美学，史诗级电影概念艺术，超写实3D数字绘景，东方神话与深海奇幻融合，电影级CG渲染，极致宏大的生物尺度对比，空灵、神秘、苍凉、神圣而带有一丝末世感。画面如同一帧顶级奇幻电影的静谧瞬间，真实的水体光学效果与超现实幻想生物自然融合，细腻、克制、具有极强的空间纵深与视觉冲击力。\n\n【主体：巨型东方灵鱼】\n\n一条庞大到近乎神明般的东方巨型灵鱼，从画面右上方与右侧延伸进入镜头，巨大的头部占据画面中央偏右的大部分空间，身体向画面右侧及上方延伸，超出画面边界，形成压迫性的近景构图。鱼头朝向左下方，呈侧前方视角，低垂着头，仿佛正缓慢靠近海面上渺小的人类。\n\n鱼体具有真实大型鲤科鱼类的解剖结构，宽阔厚重的头部，饱满的额部，细腻的鱼鳞，厚实的浅色嘴唇，微微张开的嘴巴，清晰可见的鼻孔、眼睛、鳃盖与鳃部结构。头部上半部分覆盖鲜艳而深沉的朱红色、赤褐色与暗红色鳞片，红色从头顶向背部逐渐过渡为灰白、珍珠银与半透明的冷青灰色。下颌与腹部呈乳白色，表面湿润、柔滑，具有真实的皮下透光感与细微肌理。眼睛细小、深邃、沉静，带着古老而不可捉摸的神性，不凶恶，不夸张，仿佛历经万年岁月的神秘生灵。\n\n巨鱼的头部与身体布满不规则的细长青蓝色发光裂纹，如同古老神性生物体内流动的灵脉、电光或水下能量回路。裂纹沿着鱼鳞、鳃盖与身体曲面自然蔓延，呈现纤细、分叉、蜿蜒的青色荧光脉络，局部明亮，边缘带有柔和的蓝绿色光晕，与暗沉的鱼体形成鲜明对比。发光纹路具有半透明的层次，仿佛光线从鱼体内部渗透而出，而非表面绘制的装饰。红色背部与冰蓝色灵脉形成强烈而优雅的冷暖对比。\n\n【人物：海天之间的渺小旅人】\n\n画面最下方中央，一名极其渺小的东方古风旅人独自站立于一条纤细、笔直、近乎无限延伸的水平地面或水面之上。人物仅占画面高度约8%，与巨鱼形成极端悬殊的尺度对比。\n\n人物身穿深色古代长袍，黑色与墨蓝色为主，宽袖、长衣摆，衣袂与数条细长飘带在风中轻轻扬起。头部呈古风束发或小型冠饰轮廓，整体剪影修长而克制。人物面向巨鱼，身体微微仰起，一只手抬起，像是在与眼前不可思议的庞然大物交流、召唤或致意。人物姿态自然、庄严、安静，不表现夸张的战斗动作。深色剪影清晰地映衬在明亮的青白色背景之中，传达凡人与神明、渺小与宏大之间的诗意关系。\n\n【环境与空间】\n\n极其空旷的超现实水下空间，背景由淡青色、灰蓝色、冰蓝色与乳白色渐变构成，远处没有明确的海底、岩石或建筑。空间仿佛介于深海、天空与梦境之间，具有无边无际的虚空感。画面左侧留出大面积明亮、空灵的负空间，以柔和的青白色水雾衬托巨鱼头部的轮廓。\n\n画面最上方隐约出现一条水面或水层边界，带有微弱的水平波纹、红色反光与青绿色折射。巨鱼仿佛横亘在水面之下，巨大身体从幽暗的右侧空间延伸而来，头部则进入明亮的光照区域。画面最下方是一条极细的水平地平线，带有淡金白色与青蓝色的微弱光带，人物站立其上，远处地平线与背景自然融合，形成梦境般的空间错觉。\n\n【光影与色彩】\n\n电影级水下体积光，从画面左上方及左侧大面积倾泻而入，形成柔和的乳白色逆光与青蓝色环境散射光。巨鱼头部左侧受到强烈但柔和的高光照射，鼻部、额头、脸颊与下颌呈现细腻的半透明次表面散射效果。鱼体右侧逐渐沉入深青黑色阴影，暗部保留层次与鳞片细节，不出现死黑。\n\n整体色调以冰青色、浅青灰、珍珠白、深海蓝绿为主，辅以巨鱼头顶的朱红与暗红。局部青蓝色荧光灵脉提供精致的视觉焦点，底部水平线带有极细微的暖金色光辉。高光柔和溢出，亮部带有轻微奶油质感的泛光，整体低饱和、低对比、柔和通透，冷暖过渡自然，避免艳俗的高饱和游戏特效。\n\n【摄影构图与渲染质感】\n\n16:9宽银幕电影构图，固定的低视角远景与巨型主体近景结合，巨鱼头部形成强烈的对角线视觉引导，从画面右上方延伸至中央偏左；人物位于画面底部中央，成为唯一的尺度参照。巨鱼主体约占画面70%的视觉面积，左侧保留约三分之一的空旷明亮空间。前景巨鱼具有极高细节密度，远景人物与地平线极其简洁，形成前后景鲜明的层次关系。\n\n电影级虚拟摄影，宽银幕电影镜头语言，真实的景深、空气透视、柔和镜头晕光、轻微色散、细腻胶片颗粒与高动态范围。鱼体边缘带有自然的水下折射与轻微光线扩散，鳞片与皮肤呈现真实的微观纹理。画面锐度集中于巨鱼眼部、头部与发光裂纹，背景逐渐柔化，但整体空间轮廓保持清晰。高质量全局光照、物理正确材质、真实水下散射、精细次表面散射、电影级色彩分级、顶级3A游戏过场动画与东方幻想电影概念设计品质。\n\n【情绪与氛围】\n\n绝对的宁静，宏大的孤独，神秘的相遇，古老生灵苏醒般的庄严感。没有激烈战斗，没有混乱动作，只有一名渺小旅人与一条超越凡俗尺度的东方神鱼，在无边的青色虚空中短暂对视。画面兼具东方水墨留白的意境、现代电影CG的写实质感，以及史诗级奇幻世界的神秘与震撼。\n\n【负面约束】\n\n不要任何文字、字幕、签名、LOGO、水印、标记、界面元素；不要拼图、分镜、边框；不要额外人物、鱼群、船只、建筑、珊瑚、海草或复杂背景；不要卡通风、动漫风、低多边形风格、塑料质感；不要夸张牙齿、凶恶表情、龙角、龙须或随意增加的奇幻器官；不要过度饱和、过度锐化、强烈噪点、刺眼光效、粗大闪电、过量粒子、过曝白块或死黑阴影；不要改变巨鱼头部朝向、红白配色、青蓝发光裂纹、人物底部中央的微小剪影、左侧大面积留白以及巨型生物与人物之间极端悬殊的尺度关系。",
+          post: "https://x.com/sandmrk/status/2110280131164135832"
+        },
+        {
+          src: "img/2110242015153963089-1.jpg",
+          width: 1024, height: 1536,
+          alt: "暖橙色摄影棚中一只体型如小屋般巨大的白色长毛猫趴卧，蓝眼睛半眯，头枕在前爪上，黑裙女子坐在猫爪旁托腮轻抚猫毛",
+          title: "我就静静地看着你",
+          cat: "portrait", catName: "人物系列",
+          desc: "我就静静地看着你",
+          prompt: "提示词：\n6:9竖版，单幅完整画面，超写实电影摄影，真实数码相机拍摄质感，现实主义与巨物奇幻概念融合，画面无文字、无水印、无LOGO。\n\n【场景设定】\n极简室内摄影棚，纯色暖橙色背景，地面为浅灰色水泥质感。柔和的影棚灯光从多个角度均匀照射，消除强烈阴影，营造干净、高级的商业摄影氛围。一只体型巨大如小房屋的白色长毛家猫慵懒地趴卧在画面中央，身体自然舒展，前爪向前延伸，巨大的脑袋 resting 在前爪上，蓬松的尾巴轻轻环绕身侧。\n\n【巨宠白猫】\n一只极其真实、巨大而优雅的白色长毛家猫，纯白色的柔软长毛，圆润饱满的脸颊，短小的粉色鼻子，粉嫩的耳朵，蓬松的胸毛，圆润厚实的爪子，明亮湿润的蓝色眼睛。毛发具有真实的层次、长度与自然蓬松感，每一根细毛在灯光下清晰可见，耳缘绒毛透光，鼻头微湿反光，胡须纤细自然。猫咪神情温顺、慵懒又满足，眼睛半眯，耳朵自然放松，身体完全放松地趴卧，绝不凶猛，不拟人化，不带奇幻装饰。庞大的身体与真实猫咪的骨骼、肌肉、毛发结构保持一致，仿佛一只普通白猫被真实地放大了数百倍。纯白色毛发在橙色背景衬托下形成强烈的视觉对比。\n\n【人物与互动】\n一位年轻成年东方女性，穿着简洁优雅的黑色吊带连衣裙与白色帆布鞋，乌黑长发自然垂落，真实自然的皮肤纹理，不浓妆，不刻意摆拍。她坐在巨白猫的前爪旁边，身体自然依靠在猫咪厚实的前爪侧面，身高约为猫咪前爪高度的三分之一。女孩侧身坐着，一只手轻轻抚摸巨白猫前爪上柔软的毛发，另一只手托着下巴，姿态放松惬意。巨白猫慵懒地趴卧，巨大的脑袋 resting 在前爪上，蓝色眼睛半眯，微微转头看向女孩，神态满足而安心，互动自然、亲密、温馨，像真实生活中宠物与主人的日常陪伴。\n\n【构图与空间】\n6:9竖版构图，巨白猫趴卧占据画面中央至上方大部分空间，身体从左上方向右下方自然延伸。女孩坐在画面左下方，依靠在猫咪前爪旁，形成亲密的视觉联系。完整呈现女孩的身体姿态、巨白猫的前爪、趴卧的头部与部分庞大身躯。纯色橙色背景作为简洁的环境，突出巨白猫与人物之间夸张却可信的体型差异。画面具有自然的前中后景层次，构图舒展，细节丰富，既有巨物带来的震撼，也有宠物陪伴的治愈感。\n\n【光影与摄影】\n柔和的影棚灯光，从多个角度均匀照射，消除强烈阴影，营造高级商业摄影质感。白色猫毛在灯光下呈现柔和的光泽，毛发边缘产生细腻的轮廓光。整体色调为纯白、暖橙、浅灰与黑色，简洁高级，轻微电影胶片颗粒，真实景深，细腻的空气透视，85mm电影镜头质感。真实毛发渲染、自然皮肤细节、真实光线反弹、物理正确的材质与阴影，呈现高端商业宠物摄影与电影剧照的质感。\n\n【整体氛围】\n温柔、治愈、慵懒、高级，充满童话般的惊喜，却坚持真实摄影的视觉逻辑。仿佛世界上真的存在一只巨大而温顺的白猫，与自己的主人在极简摄影棚中安静陪伴。画面干净、生动、细腻，令人会心一笑，具有强烈的沉浸感与情感感染力。\n\n【负面约束】\n不要插画、动漫、卡通、玩偶、塑料毛发、游戏建模感；不要猫咪站立拟人、穿衣服、说话或做出人类表情；不要凶狠攻击、张嘴咆哮、露牙、发光眼睛、魔法特效；不要多余肢体、畸形爪子、错误胡须、重复人物；不要人物与猫咪比例失真以外的透视错误；不要过度磨皮、过度锐化、强烈HDR、过饱和色彩、虚假光晕；不要文字、字幕、LOGO、水印、边框或拼图。\n\n【署名文字】\n画面下方中央保留一行小号白色署名：\"AI art gallery | @sandmrk\"。字体Arial，简洁清晰。",
+          post: "https://x.com/sandmrk/status/2110242015153963089"
+        },
         {
           src: "img/2110225953578418343-1.jpg",
           width: 1672, height: 941,
@@ -1436,6 +1497,8 @@ The oversized moon sphere emits a warm ivory-gold glow, showing realistic crater
       var lbImgs = document.getElementById("lbImgs");
       var lbImgPrev = document.getElementById("lbImgPrev");
       var lbImgNext = document.getElementById("lbImgNext");
+      var lbTapPrev = document.getElementById("lbTapPrev");
+      var lbTapNext = document.getElementById("lbTapNext");
       var curImgs = [];
       var curAlts = [];
       var sub = 0;
@@ -1471,6 +1534,8 @@ The oversized moon sphere emits a warm ivory-gold glow, showing realistic crater
         lbImgs.hidden = curImgs.length <= 1;
         lbImgPrev.hidden = curImgs.length <= 1;
         lbImgNext.hidden = curImgs.length <= 1;
+        lbTapPrev.hidden = curImgs.length <= 1;
+        lbTapNext.hidden = curImgs.length <= 1;
         setSub(0);
         lbFigure.classList.toggle("wide", (w.width || 1024) > (w.height || 1536));
         lbTitle.textContent = "《" + w.title + "》 · " + w.catName;
@@ -1537,6 +1602,8 @@ The oversized moon sphere emits a warm ivory-gold glow, showing realistic crater
       document.getElementById("lbNext").addEventListener("click", function () { show(current + 1); });
       lbImgPrev.addEventListener("click", function () { setSub(sub - 1); });
       lbImgNext.addEventListener("click", function () { setSub(sub + 1); });
+      lbTapPrev.addEventListener("click", function () { setSub(sub - 1); });
+      lbTapNext.addEventListener("click", function () { setSub(sub + 1); });
       lb.addEventListener("click", function (e) { if (e.target === lb || e.target === lbScroll) closeLb(); });
       document.addEventListener("keydown", function (e) {
         if (!lb.classList.contains("open")) return;
