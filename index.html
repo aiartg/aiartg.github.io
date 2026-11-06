@@ -3359,6 +3359,9 @@ The oversized moon sphere emits a warm ivory-gold glow, showing realistic crater
       var workCount = document.getElementById("workCount");
       if (workCount) workCount.textContent = WORKS.length;
       var grid = document.getElementById("grid");
+      function thumbSrc(s) {
+        return "img/th/" + s.split("/").pop().replace(/\.[^.]+$/, ".jpg");
+      }
       WORKS.forEach(function (w, i) {
         var num = String(WORKS.length - i).padStart(2, "0");
         var fullDesc = w.desc || "";
@@ -3370,7 +3373,7 @@ The oversized moon sphere emits a warm ivory-gold glow, showing realistic crater
         card.style.setProperty("--d", (i % 2) * 0.08 + "s");
         card.innerHTML =
           '<button type="button" class="imgbtn" data-open="' + i + '" aria-label="放大查看《' + w.title + '》">' +
-          '<img src="' + w.src + '" alt="' + w.alt + '" width="' + (w.width || 1024) + '" height="' + (w.height || 1536) + '" loading="lazy" decoding="async" />' +
+          '<img src="' + thumbSrc(w.src) + '" alt="' + w.alt + '" width="' + (w.width || 1024) + '" height="' + (w.height || 1536) + '" loading="lazy" decoding="async" />' +
           "</button>" +
           '<figcaption class="plaque"><span class="card-top"><span class="no">No.' + num + '</span>' +
           '<span class="seal-mini" aria-hidden="true">' + w.title.charAt(0) + '</span></span>' +
@@ -3381,6 +3384,10 @@ The oversized moon sphere emits a warm ivory-gold glow, showing realistic crater
           '<a class="btn btn-post" href="' + w.post + '" target="_blank" rel="noopener noreferrer">🔗 原帖链接 ↗</a>' +
           '<button class="btn btn-prompt" type="button" data-open="' + i + '">📝 提示词</button>' +
           "</span></figcaption>";
+        var cardImg = card.querySelector("img");
+        cardImg.addEventListener("error", function () {
+          if (cardImg.getAttribute("src") !== w.src) cardImg.src = w.src;
+        });
         grid.appendChild(card);
       });
 
