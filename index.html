@@ -237,16 +237,17 @@
 
       .imgbtn { all: unset; display: block; width: 100%; cursor: zoom-in; aspect-ratio: 3 / 4; overflow: hidden; background: var(--paper-2); }
       .imgbtn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-      .plaque { min-width: 0; }
+      .plaque { min-width: 0; flex: 1 1 auto; }
 
       /* ---------- 展厅 ---------- */
       .gallery-wrap { scroll-margin-top: 52px; padding-top: clamp(18px, 2.8vw, 28px); padding-bottom: 2px; }
-      .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; align-items: start; }
+      .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; align-items: stretch; }
       @media (min-width: 901px) {
         .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
       }
       .card {
-        margin: 0; background: var(--panel);
+        margin: 0; background: var(--panel); height: 100%;
+        display: flex; flex-direction: column;
         border: 1px solid var(--line); padding: 6px 6px 0; box-shadow: var(--shadow-sm);
       }
       @media (hover: hover) {
@@ -272,9 +273,9 @@
         border-radius: 4px; transform: none;
         writing-mode: horizontal-tb; text-orientation: upright;
       }
-      .card .plaque .t { display: block; font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 20px; line-height: 1.35; letter-spacing: 0.02em; }
-      .card .plaque .cat { display: block; margin-top: 5px; color: var(--gold); font-size: 12px; font-weight: 700; letter-spacing: 0.2em; }
-      .card .d { display: block; margin: 9px 0 0; color: var(--ink-2); font-size: 13.5px; line-height: 1.8; white-space: pre-line; }
+      .card .plaque .t { display: block; font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 20px; line-height: 1.35; letter-spacing: 0.02em; height: 1.35em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .card .plaque .cat { display: block; margin-top: 5px; color: var(--gold); font-size: 12px; font-weight: 700; letter-spacing: 0.2em; line-height: 1.5; height: 1.5em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .card .d { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: break-word; height: 3.6em; margin: 9px 0 0; color: var(--ink-2); font-size: 13.5px; line-height: 1.8; white-space: pre-line; }
       .card .d-more {
         display: inline; padding: 0; border: none; background: none; vertical-align: baseline;
         color: var(--cinnabar); font: inherit; font-weight: 700; cursor: pointer;
@@ -467,7 +468,7 @@
         .card .seal-mini { width: 23px; height: 23px; font-size: 13px; border-radius: 3px; }
         .card .plaque .t { font-size: 16.5px; }
         .card .plaque .cat { font-size: 11px; margin-top: 3px; }
-        .card .d { font-size: 12.5px; line-height: 1.7; margin-top: 6px; }
+        .card .d { font-size: 12.5px; line-height: 1.7; height: 3.4em; margin-top: 6px; }
         .card .btn-row { gap: 7px; margin-top: 10px; }
         .card .btn { min-height: 32px; padding: 5px 8px; font-size: 12px; }
         .brand .by { display: none; }
@@ -3717,7 +3718,7 @@ The oversized moon sphere emits a warm ivory-gold glow, showing realistic crater
       }
       WORKS.forEach(function (w, i) {
         var num = String(WORKS.length - i).padStart(2, "0");
-        var fullDesc = w.desc || "";
+        var fullDesc = (w.desc || "").replace(/\s+/g, " ").trim();
         var descHtml = fullDesc.length > 30
           ? fullDesc.slice(0, 30) + "…" + '<button type="button" class="d-more" data-open="' + i + '" aria-label="查看《' + w.title + '》帖子文案全文">查看全文 ›</button>'
           : fullDesc;
