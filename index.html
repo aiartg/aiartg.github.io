@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
     <meta name="description" content="AI Art Gallery · 丹青画廊——只陈列发布在 X 上的 AI 绘画作品，每幅附原帖链接与可复制的提示词全文。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AI Art Gallery · 丹青画廊" />
+    <meta property="og:title" content="AI Art Gallery · 丹青画廊" />
+    <meta property="og:description" content="只陈列发布在 X 上的 AI 绘画作品，每幅附原帖链接与可复制的提示词全文。" />
+    <meta property="og:url" content="https://aiartg.github.io/" />
+    <meta property="og:image" content="https://aiartg.github.io/img/og-cover.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AI Art Gallery · 丹青画廊" />
+    <meta name="twitter:description" content="只陈列发布在 X 上的 AI 绘画作品，每幅附原帖链接与可复制的提示词全文。" />
+    <meta name="twitter:image" content="https://aiartg.github.io/img/og-cover.jpg" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f3eddc" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#14110a" />
     <link rel="icon" href="data:," />
     <title>AI Art Gallery · 丹青画廊</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -234,6 +246,25 @@
       .sec-head .rule { flex: 1; height: 1px; background: var(--line-strong); align-self: center; }
       .sec-head .note { color: var(--ink-3); font-size: 12px; line-height: 1.6; letter-spacing: 0.04em; }
       .sec-head .note b { color: var(--cinnabar); font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 13.5px; }
+
+      /* ---------- 展厅搜索 ---------- */
+      .search-row { margin-bottom: clamp(14px, 2vw, 18px); }
+      .search-input {
+        width: 300px; max-width: 100%; min-height: 38px; padding: 8px 12px;
+        background: var(--panel); color: var(--ink);
+        border: 1px solid var(--line-strong); border-radius: 2px;
+        font-family: "Noto Serif SC", "Songti SC", serif; font-size: 14px; letter-spacing: 0.04em;
+        transition: border-color 0.18s, box-shadow 0.18s;
+      }
+      .search-input::placeholder { color: var(--ink-3); }
+      .search-input:focus { outline: none; border-color: var(--cinnabar); box-shadow: 0 0 0 1px var(--cinnabar); }
+      .search-empty {
+        margin: 4px 0 26px; color: var(--ink-2);
+        font-family: "Noto Serif SC", "Songti SC", serif; font-size: 15px; line-height: 1.8; letter-spacing: 0.04em;
+      }
+      @media (max-width: 620px) {
+        .search-input { width: 100%; }
+      }
 
       .imgbtn { all: unset; display: block; width: 100%; cursor: zoom-in; aspect-ratio: 3 / 4; overflow: hidden; background: var(--paper-2); }
       .imgbtn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
@@ -533,9 +564,13 @@
         <h2>展厅</h2>
         <span class="en">THE COLLECTION</span>
         <span class="rule"></span>
-        <span class="note">在展作品 <b id="workCount">5</b> 幅 · 全部来自 X 帖子 · 每幅附原帖与提示词</span>
+        <span class="note" id="galleryNote">在展作品 <b id="workCount">5</b> 幅 · 全部来自 X 帖子 · 每幅附原帖与提示词</span>
+      </div>
+      <div class="search-row">
+        <input class="search-input" id="searchInput" type="search" placeholder="搜标题、关键词…" aria-label="搜索作品（按标题、简介、画面描述）" autocomplete="off" />
       </div>
       <div class="grid" id="grid"></div>
+      <p class="search-empty" id="searchEmpty" hidden></p>
     </main>
 
     <section class="curator wrap" id="about">
@@ -604,6 +639,7 @@
             <div class="lb-btns">
               <a class="lb-btn accent" id="lbPost2" href="#" target="_blank" rel="noopener noreferrer">🔗 在 X 查看原帖 ↗</a>
               <button class="lb-btn" type="button" id="lbCopyTop">📝 复制提示词</button>
+              <button class="lb-btn" type="button" id="lbCopyLink">复制本幅链接</button>
             </div>
             <div class="lb-nav">
               <button class="lb-btn" type="button" id="lbPrev">← 上一幅</button>
@@ -628,7 +664,8 @@ width: 1086, height: 1448,
 alt: "黄昏宫苑宴席上，唐代剑器舞者旋身舞双剑的半身像，绯红舞袍金纹领口、金腰封束腰，高髻插金凤步摇、珍珠流苏摇曳，一剑高举指天、剑柄红绸在空中盘卷，另一剑低扫身侧，身后灯笼暖光与看客剪影",
 title: "剑器惊鸿｜一舞动四方",
 cat: "portrait", catName: "人物系列",
-desc: "剑未出鞘，满座先屏住了呼吸。红绸过处，剑光比笑声先一步落下——她舞的是剑，还是江山？（提示词见主帖 2125594394300727683 全文；成图由作者在该帖自回复中贴出。）",
+desc: "剑未出鞘，满座先屏住了呼吸。红绸过处，剑光比笑声先一步落下——她舞的是剑，还是江山？",
+note: "（提示词见主帖 2125594394300727683 全文；成图由作者在该帖自回复中贴出。）",
 prompt: `Image generation prompt:
 
 A photorealistic cinematic portrait, vertical 3:4 composition, half-body from the head to mid-thigh, caught mid-motion. A Tang dynasty sword dancer in her early twenties, a beauty built on bone structure — high full forehead, cheekbones in one smooth rounded arc, jaw tapering in an unbroken curve to a small softly pointed chin — with cold porcelain skin, tiny natural pores and fine fuzz, sheen only on the nose tip and lower lip, a faint living flush of exertion across her cheeks. Her expression comes in three layers: on the surface, absolute focus; beneath it, the exhilaration of the dance; leaking through, bright fierce phoenix eyes locked mid-turn, lips parted on a dancer's breath.
@@ -647,7 +684,8 @@ width: 1086, height: 1448,
 alt: "长安夜市的戏台边，唐代女傀儡师半身像，深靛素袍深V开领、领口银线云纹、绛红腰带，高髻插两支木簪缠红绳，双手操持木质十字提线架，细丝线垂向下方一只抬袖起舞的唐装木偶，腕系红绳手环，腰间挂皮制工具袋，身后金色灯笼与看客剪影",
 title: "唐傀夜戏｜丝落长安",
 cat: "portrait", catName: "人物系列",
-desc: "十指轻抬，木偶先她一步转了头。她从不开口，千言万语都在线那头说尽了。是她在演木偶，还是木偶在演她？（提示词见主帖 2125554296653771021 全文；成图由作者在该帖自回复中贴出。）",
+desc: "十指轻抬，木偶先她一步转了头。她从不开口，千言万语都在线那头说尽了。是她在演木偶，还是木偶在演她？",
+note: "（提示词见主帖 2125554296653771021 全文；成图由作者在该帖自回复中贴出。）",
 prompt: `Image generation prompt:
 
 A photorealistic cinematic portrait, vertical 3:4 composition, half-body from the head to mid-thigh. A Tang dynasty puppeteer in her early twenties, a beauty built on bone structure — high full forehead, cheekbones in one smooth rounded arc, jaw tapering in an unbroken curve to a small softly pointed chin — with cold porcelain skin, tiny natural pores and fine fuzz, sheen only on the nose tip and lower lip. Her expression comes in three layers: on the surface, calm concentration; beneath it, a performer living inside her puppet's story; leaking through, phoenix eyes lowered tenderly onto the puppet below, lips softly parted as if voicing its lines for it.
@@ -666,7 +704,8 @@ width: 941, height: 1672,
 alt: "月夜的大理石浴厅里，银发女子戴金花发饰、着象牙白与香槟金的金丝珍珠装束，倚坐在池沿上回望镜头；黑发带紫晕的女子戴紫水晶发饰、着黑与紫晶的装束，正从水面雾气里向镜头走来，拱窗外满月高悬，池边白花与烛光环绕",
 title: "双生女神｜室内版",
 cat: "portrait", catName: "人物系列",
-desc: "月光从拱窗洒进大理石浴厅，烛光沿着池边次第亮起。银发金装的她倚坐在池沿上，黑发紫晶的她正从雾气里向镜头走来——一张温柔，一张冷峻，同一轮月亮照着两个人。（提示词见主帖 2125425472767143991 全文；成图由作者在该帖自回复中贴出。）",
+desc: "月光从拱窗洒进大理石浴厅，烛光沿着池边次第亮起。银发金装的她倚坐在池沿上，黑发紫晶的她正从雾气里向镜头走来——一张温柔，一张冷峻，同一轮月亮照着两个人。",
+note: "（提示词见主帖 2125425472767143991 全文；成图由作者在该帖自回复中贴出。）",
 prompt: `Image generation prompt:
 
 A photorealistic fantasy couture editorial photograph, vertical 9:16 composition, in a luxurious marble bath hall at night — tall columns, arched windows pouring in moonlight, a still indoor pool reflecting the light, low mist over the water, white flowers and candles along the pool edge. Dreamy, ethereal, romantic.
@@ -689,7 +728,8 @@ width: 1086, height: 1448,
 alt: "竹林夜坛前，唐代女巫半身像，黑羽铜铃头饰，墨黑银纹绣袍深V开领、胸前垂铜镜坠，右手举铜手镜、左手提一串铜铃，腰间铃带，凤眼泛青金幽光，身后红烛、香炉与符布，冷雾绕肩",
 title: "唐巫夜坛｜铃响幽光",
 cat: "portrait", catName: "人物系列",
-desc: "职业：唐代女巫（巫祝）。铜铃一响，她的眼睛亮了。那不是烛光，是那边世界的光漏进来了。她说今晚有人要回来，你猜，是谁？（提示词为图生图编辑提示词，见伴生帖 2125182539707085126；成图由作者在该帖自回复中贴出。）",
+desc: "职业：唐代女巫（巫祝）。铜铃一响，她的眼睛亮了。那不是烛光，是那边世界的光漏进来了。她说今晚有人要回来，你猜，是谁？",
+note: "（提示词为图生图编辑提示词，见伴生帖 2125182539707085126；成图由作者在该帖自回复中贴出。）",
 prompt: `Image edit prompt:
 
 Edit the reference artwork with only these changes, keeping everything else exactly as drawn — the same woman and face, the same black feather-and-bronze-bell headdress, the same bronze hand mirror raised in her right hand, the same cluster of bronze bells in her left hand, the same bell sash at her waist, the same bronze mirror pendant, the same night altar scene with candles, incense smoke, talisman cloth and bamboo mist, the same half-body framing and cinematic lighting.
@@ -712,7 +752,8 @@ alt: "夜空下，白金绣纹道袍的女道士立于地面金色符阵中央�
 alts: ["夜空下，白金绣纹道袍的女道士立于地面金色符阵中央，右手剑指直探镜头、透视放大，腕缠红绳铜钱，左手持白色拂尘，黄符漫天飞舞，黑雾在阵外翻卷", "低机位近景，同一白金道袍女道士压低身子，剑指直点镜头、指尖迸出金色电光，眼神从眉下压来，左手拂尘横扫成弧，脚下金色符阵与八卦纹亮起，黄符环绕飞旋"],
 title: "六指驱魔女道士",
 cat: "portrait", catName: "人物系列",
-desc: "夜里的阵已经亮起来了，黄符一张一张从地上飞起，她压低身子，剑指直直点向镜头，眼神从眉毛底下压下来，像在说，轮到你了。黑雾退到阵外，一步也不敢再近。（提示词见作者载体帖 2125086148171366638 全文。）",
+desc: "夜里的阵已经亮起来了，黄符一张一张从地上飞起，她压低身子，剑指直直点向镜头，眼神从眉毛底下压下来，像在说，轮到你了。黑雾退到阵外，一步也不敢再近。",
+note: "（提示词见作者载体帖 2125086148171366638 全文。）",
 prompt: `Image generation prompt:
 
 A cinematic photorealistic wide-angle shot, vertical 9:16, of a demon-suppression ritual at night, photographed with a 24mm wide-angle lens from a low angle close to the ground. One young East Asian female Taoist priestess stands at the center of a vast glowing golden talisman array inscribed on dark stone ground, commanding the ritual.
@@ -762,7 +803,8 @@ width: 941, height: 1672,
 alt: "黑缎挂脖迷你裙女子全身站姿，金丝圆眼镜、高髻金簪配孔雀绿羽饰，右手食指轻触右脸颊、左臂横于胸前托肘，左腿龙纹、黑丝袜、黑色尖头细高跟，浅灰棚拍背景",
 title: "黑金眼镜娘",
 cat: "portrait", catName: "人物系列",
-desc: "黑缎的挂脖裙配金丝眼镜，\n金莲花胸针点在领口，\n左腿一条龙纹若隐若现。\n她指尖轻触脸颊，\n抬眼看过来，\n冷静又自信。\n（提示词见作者载体帖 2123195849782301170；作者原话「还不睡吗？是在等提示词吗？」）",
+desc: "黑缎的挂脖裙配金丝眼镜，\n金莲花胸针点在领口，\n左腿一条龙纹若隐若现。\n她指尖轻触脸颊，\n抬眼看过来，\n冷静又自信。",
+note: "（提示词见作者载体帖 2123195849782301170；作者原话「还不睡吗？是在等提示词吗？」）",
 prompt: `Image generation prompt:
 Semi-realistic CG character portrait, glossy high-end game-art rendering, full body, vertical composition. A mature beautiful Chinese woman photographed from slightly above against a plain light-grey seamless studio backdrop, soft shadow beneath her feet, her whole figure from the topknot to the stiletto heels inside the frame.
 
@@ -787,7 +829,8 @@ width: 720, height: 1280,
 alt: "孔雀羽金冠女子胸上肖像，蓝眼睛直视镜头，金丝镶宝石王冠配孔雀羽，珍珠金链流苏垂落脸侧，黑底孔雀羽刺绣礼服配宝石项链，暗夜暖光虚化背景",
 title: "孔雀羽冠",
 cat: "portrait", catName: "人物系列",
-desc: "夜色很暗，\n暖光却很温柔。\n孔雀羽在她的冠上亮起金边，\n蓝眼睛直直地望过来，\n端庄得像一位女王。\nGPT 2.6 做的，\n作者又加了滤镜。\n（提示词见作者载体帖 2122957344120467628）",
+desc: "夜色很暗，\n暖光却很温柔。\n孔雀羽在她的冠上亮起金边，\n蓝眼睛直直地望过来，\n端庄得像一位女王。\nGPT 2.6 做的，\n作者又加了滤镜。",
+note: "（提示词见作者载体帖 2122957344120467628）",
 prompt: `Image generation prompt:
 Lighting first: a dark misty night backdrop with soft warm bokeh lights; strong backlight pours in from behind and above, so the peacock feathers of her crown glow at their edges with golden rim light and the fine hairs of the feathers light up like filaments; her face is lit by a soft frontal fill, clean and luminous, her bare shoulders catching a gentle sheen. Photorealistic beauty portrait shot on 85mm f/1.4 lens, shallow depth of field, natural skin microtexture with visible pores and fine vellus hair, realistic subsurface scattering on skin, clean luminous gloss and a soft dreamy haze in the background, face and eyes kept perfectly sharp with tack focus.
 
@@ -809,7 +852,8 @@ width: 941, height: 1672,
 alt: "银灰三角比基尼女子坐于竹廊竹凳边，细斜纹褶裥，左手撑凳面、右手搭凳边，目光越过镜头望向远方，竹条光影洒落背景",
 title: "竹廊银纱",
 cat: "portrait", catName: "人物系列",
-desc: "竹影一道一道落在身上，\n银灰的纱还带着阳光的温度。\n她坐在竹凳边上，\n手撑着凳面，\n目光越过镜头，\n望向很远的地方。\n（提示词见作者载体帖 2122837919040000128；作者原话「我这个比较违规。」）",
+desc: "竹影一道一道落在身上，\n银灰的纱还带着阳光的温度。\n她坐在竹凳边上，\n手撑着凳面，\n目光越过镜头，\n望向很远的地方。",
+note: "（提示词见作者载体帖 2122837919040000128；作者原话「我这个比较违规。」）",
 prompt: `Image generation prompt:
 A photorealistic modern architectural fashion photograph, vertical 9:16, eye-level 50mm medium shot. A beautiful 23-year-old East Asian adult woman with a balanced, full figure: a naturally full bust with a soft rounded contour and natural weight, a clearly defined yet natural bust-to-waist difference, a slender waist, and smooth, rounded, full hip and leg curves. She has a soft oval face, relaxed brows, apricot eyes with a subtle inner fold, a naturally straight nose bridge and full lips; long black hair, a clear fresh base makeup and natural rose lip color.
 She wears a silver-grey triangle-cup bikini: a cross-halter deep V whose lines converge down the center of her sternum to the top edge of the underbust band, the straps meeting behind her neck, the cups shaped with fine diagonal pleats; matching high-cut bottoms of the same fabric with the waistband sitting above her hip bones; both pieces carry a fine narrow vertical texture.
@@ -825,7 +869,8 @@ width: 941, height: 1672,
 alt: "宋代仕女站姿半身，浅粉刺绣袍配虹彩薄纱缎带，珍珠花朵发饰与前额链，一手轻触一点星光、另一手置于腰际，星空化作柔光薄雾",
 title: "虹光幻袍·柔光版",
 cat: "portrait", catName: "人物系列",
-desc: "一手轻触星光，\n一手落在腰际。\n虹彩的薄纱还和昨天一样，\n只是光更软了，\n雾更轻了。\n这是《虹光幻袍》的柔光精修版，\n提示词在载体帖里。\n（与 No.153 同造型柔光精修版；提示词见作者载体帖 2122888247860986017）",
+desc: "一手轻触星光，\n一手落在腰际。\n虹彩的薄纱还和昨天一样，\n只是光更软了，\n雾更轻了。\n这是《虹光幻袍》的柔光精修版，\n提示词在载体帖里。",
+note: "（与 No.153 同造型柔光精修版；提示词见作者载体帖 2122888247860986017）",
 prompt: `Image generation prompt:
 Refine this standing portrait of the same Song-dynasty lady into a softer, cleaner 9:16 vertical version, keeping her face, hairstyle, pearl-and-flower hair ornaments, forehead chain and pale pink embroidered robe with iridescent rainbow gauze ribbons exactly the same, and keeping her standing large half-body pose — one hand raised lightly touching a point of starlight, the other resting near her waist.
 Improvements: remove all speckle and grain noise so the whole image is clean and smooth; give her skin a finer, more refined texture — flawless luminous porcelain skin with delicate realistic detail, soft and translucent, no yellow color cast, clean neutral color balance.
@@ -842,7 +887,8 @@ alt: "泳池边，象牙白钩针镂空连体裤女子坐在池沿，双腿浸�
 alts: ["泳池边，象牙白钩针镂空连体裤女子坐在池沿，双腿浸入碧蓝池水，闭目仰头迎着阳光，身后条纹遮阳伞与躺椅", "地中海白墙露台上，同一象牙白钩针连体裤女子坐在白色石墙边，手持宽檐草帽，玫红三角梅爬满白墙，身后是黄昏大海", "玻璃温室里，同一象牙白钩针连体裤女子站在龟背竹与蕨叶间，左手提编织草包，阳光透过玻璃洒落石板路"],
 title: "象牙钩针",
 cat: "portrait", catName: "人物系列",
-desc: "哈哈，答案揭晓 第二张是提示词\n（同款象牙白钩针连体裤三境，图2最贴合提示词场景；提示词见作者提示词载体帖 2122600578920714404）",
+desc: "哈哈，答案揭晓 第二张是提示词",
+note: "（同款象牙白钩针连体裤三境，图2最贴合提示词场景；提示词见作者提示词载体帖 2122600578920714404）",
 prompt: `这个提示词真是绝了！！
 快来试试吧！！
 
@@ -860,7 +906,8 @@ width: 1086, height: 1448,
 alt: "盛唐宫殿内，朱红金绣抹胸配鎏金披帛与开衩长裙的贵妃立于宫柱屏风间，高髻缀金凤钗红宝石步摇珍珠流苏，额间花钿，左手轻提披帛、右手持绣花团扇",
 title: "赤金鎏影·盛唐绝色贵妃",
 cat: "portrait", catName: "人物系列",
-desc: "这下凉快了 驴兄诚不欺 做不出来找他\n（提示词为怪侠一只驴 @jackchen1919《赤金鎏影·盛唐绝色贵妃》，见其原帖 2122547527475941640，本帖引用该帖；作者自回复确认按此提示词生成）",
+desc: "这下凉快了 驴兄诚不欺 做不出来找他",
+note: "（提示词为怪侠一只驴 @jackchen1919《赤金鎏影·盛唐绝色贵妃》，见其原帖 2122547527475941640，本帖引用该帖；作者自回复确认按此提示词生成）",
 prompt: `真的顶！绝不骗你，快去试！
 
 # PROMPT ｜赤金鎏影 · 盛唐绝色贵妃
@@ -926,7 +973,8 @@ alt: "金粉薄纱覆面的古装女子正面特写，编发盘髻缀金链蝴�
 alts: ["金粉薄纱覆面的古装女子正面特写，编发盘髻缀金链蝴蝶簪与珍珠流苏，额间金链垂欧泊坠，灰色眼睛直视镜头，左手轻捏纱边，蓝锈锦衣金线绣花", "同一女子侧身回眸，裸肩与垂在身前的长辫，金粉薄纱被风扬起，额链珠坠轻晃，蓝锈锦衣配金腰封，斑驳日光背景"],
 title: "纱后回眸",
 cat: "portrait", catName: "人物系列",
-desc: "风把纱吹起来，\n她回头看了一眼。\n肩是裸的，\n辫子垂在胸前。\n额间的珠子晃了晃，\n像水面上的光。\n你说，\n她这一回头是在等谁呢？\n（提示词见作者提示词载体帖 2122492960717815968）",
+desc: "风把纱吹起来，\n她回头看了一眼。\n肩是裸的，\n辫子垂在胸前。\n额间的珠子晃了晃，\n像水面上的光。\n你说，\n她这一回头是在等谁呢？",
+note: "（提示词见作者提示词载体帖 2122492960717815968）",
 prompt: `Image generation prompt:
 A semi-realistic CG close-up portrait with a soft painterly finish at half strength, luminous gloss and a light dreamy haze — a beautiful young Chinese woman in ornate dress, her face filling the center of the frame, dappled sunlight and sparkling bokeh behind her. Her skin is a refined cool porcelain white, clean and flawless with no speckle noise, the colors balanced clean and neutral with no yellow cast.
 Her black hair is dressed in an elaborate braided updo wound with fine gold chains, small butterfly and floral pins with pearl drops, and a delicate tiara; long beaded chain tassels hang at both sides of her face. Across her forehead lies a fine gold forehead chain with a central pale opal gem and small dangling drops, one teardrop resting between her brows. Her eyes are large and grey, with winged eyeliner and long lashes, gazing straight into the camera; her lips are glossy rose, softly closed.
@@ -942,7 +990,8 @@ width: 941, height: 1672,
 alt: "深绿金饰酒店房间里，长发齐刘海女子坐在象牙色缎面床沿，紫色蕾丝束身连体衣配黑色吊带长袜，右手轻触发丝，身旁床头柜上黄铜台灯与白玫瑰，墙上金框花卉油画",
 title: "紫缎床畔",
 cat: "portrait", catName: "人物系列",
-desc: "我不知道，我啥都不知道啊\n（提示词见作者提示词载体帖 2122608054286053719）",
+desc: "我不知道，我啥都不知道啊",
+note: "（提示词见作者提示词载体帖 2122608054286053719）",
 prompt: `Image generation prompt:
 A photorealistic fashion editorial portrait of a real young East Asian woman sitting on the edge of a luxury hotel bed, photographed straight on at eye level. Warm lamplight, deep green walls with gold trim, an upholstered headboard with cream and emerald pillows behind her, a bedside table with a brass lamp and a vase of white roses at the left, a gold-framed floral painting on the wall. Her skin is a refined cool porcelain white, clean and flawless with no speckle noise, the colors balanced clean and neutral with no yellow cast.
 She has long dark-brown hair with straight bangs falling past her chest, soft blush on her cheeks, and a gentle expression looking into the camera. Her figure is slim overall with a naturally full bust line. She wears a couture plum-purple corset bodysuit: strapless sweetheart cups in floral lace with a small satin bow at the center, a sheer lace panel down the midriff, satin side panels with visible boning, and a lace-trimmed hem. Black garter straps with gold clasps hold up black sheer thigh-high stockings.
@@ -958,7 +1007,8 @@ alt: "GPT 2.6 版，彩虹幻色长袍女子低头抵肩，眉心金色阳芒珍
 alts: ["GPT 2.6 版，彩虹幻色长袍女子低头抵肩，眉心金色阳芒珍珠额饰，彩色光斑洒落面颊与裸肩", "即梦 5.5 版，同一造型，左上水晶棱镜折射彩光，女子蓝眼睛低垂，光斑洒满面颊与肩头", "Muse 版，同一造型特写，彩色光斑如碎钻洒满面颊与裸肩，女子闭目低头", "Grok 版，同一造型，女子蓝眼睛低垂、长发垂落，彩色光斑洒落面颊，水晶大花发簪"],
 title: "虹光幻袍·四模型版",
 cat: "portrait", catName: "人物系列",
-desc: "尽力了。\n分别是 GPT 2.6、即梦 5.5、Muse、Grok。\n感觉即梦的更好呢。\n（同一提示词四模型复刻原帖神作；与 No.153 同一提示词，提示词见作者自回复载体帖 2122310542832595388；图序依次为 GPT 2.6、即梦 5.5、Muse、Grok，按作者所列顺序）",
+desc: "尽力了。\n分别是 GPT 2.6、即梦 5.5、Muse、Grok。\n感觉即梦的更好呢。",
+note: "（同一提示词四模型复刻原帖神作；与 No.153 同一提示词，提示词见作者自回复载体帖 2122310542832595388；图序依次为 GPT 2.6、即梦 5.5、Muse、Grok，按作者所列顺序）",
 prompt: `Image generation prompt:
 A semi-realistic CG portrait with a soft painterly finish at half strength, luminous gloss and the lightest dreamy bloom on the highlights only — a beautiful young woman in an iridescent fantasy robe, close-up from slightly above, caught in a quiet, withdrawn moment, vertical 9:16 composition.
 Lighting first, because the light is the subject: sunlight bouncing off a rippling crystal-and-water reflector off-frame at the upper left lands ON her skin as projected glare — many small broken flecks and irregular little patches of colored light scattered unevenly across her forehead, her cheekbones and the top curve of her bare shoulder, bright cores with soft edges, pink, blue, green and gold flecks side by side, densest where her surfaces turn up toward the light and thinning into sparse tiny sparkles downward, with clean porcelain skin showing between them. The color is light, never skin pigment, never makeup. Between the flecks her skin stays a clean cool porcelain white, pearl-glazed and wet-glossy.
@@ -979,7 +1029,8 @@ alt: "彩虹幻色长袍女子低头抵肩，眉心金色阳芒珍珠额饰，�
 alts: ["彩虹幻色长袍女子低头抵肩，眉心金色阳芒珍珠额饰，水晶花发簪与珍珠项链，彩色光斑洒落脸颊与裸肩，深蓝紫背景", "同一造型近景，女子低垂眼睑、蓝眼睛半睁，彩色光斑如水纹洒满面颊与肩头，水晶花发簪垂落珍珠", "同一造型，女子闭目低头，暖白光斑成片落在裸肩与面颊，珍珠项链与幻色锦袍", "同一造型，女子双目低垂、唇色淡粉，彩色光斑洒满面颊，珍珠项链层叠", "同一造型侧面近景，女子蓝眼睛低垂，光影如窗格洒落肩头，粉蓝幻色长袍金线刺绣", "同一造型，女子蓝眼睛直视略低，光斑洒落面颊与裸肩，水晶大花发簪垂落珍珠流苏"],
 title: "虹光幻袍",
 cat: "portrait", catName: "人物系列",
-desc: "这个我复刻不出来……\n靠你们了。\n第一张原图，要求文生图。\n（复刻他人原作设计；首图为图生图复刻的原图，其余五图为同一提示词直出、不垫图；与 No.154 同一提示词，提示词见作者载体帖 2122310542832595388）",
+desc: "这个我复刻不出来……\n靠你们了。\n第一张原图，要求文生图。",
+note: "（复刻他人原作设计；首图为图生图复刻的原图，其余五图为同一提示词直出、不垫图；与 No.154 同一提示词，提示词见作者载体帖 2122310542832595388）",
 prompt: `Image generation prompt:
 A semi-realistic CG portrait with a soft painterly finish at half strength, luminous gloss and the lightest dreamy bloom on the highlights only — a beautiful young woman in an iridescent fantasy robe, close-up from slightly above, caught in a quiet, withdrawn moment, vertical 9:16 composition.
 Lighting first, because the light is the subject: sunlight bouncing off a rippling crystal-and-water reflector off-frame at the upper left lands ON her skin as projected glare — many small broken flecks and irregular little patches of colored light scattered unevenly across her forehead, her cheekbones and the top curve of her bare shoulder, bright cores with soft edges, pink, blue, green and gold flecks side by side, densest where her surfaces turn up toward the light and thinning into sparse tiny sparkles downward, with clean porcelain skin showing between them. The color is light, never skin pigment, never makeup. Between the flecks her skin stays a clean cool porcelain white, pearl-glazed and wet-glossy.
@@ -1000,7 +1051,8 @@ alt: "波斯绿洲地毯上，深青丝绒金绣深V长裙女子侧卧，粗长�
 alts: ["波斯绿洲地毯上，深青丝绒金绣深V长裙女子侧卧，粗长发辫垂过腰际，绿松石金项链与金吊灯耳环，身旁黄铜茶壶与紫葡萄，棕榈叶与水池在后", "女子跪坐地毯边手提黄铜茶壶斟茶，深青金绣长裙与金腰带，桌上紫葡萄、无花果与坚果，绿洲水池与棕榈环绕", "女子正坐手捧黄铜茶杯直视镜头，深青丝绒金绣长裙，金腰带缀宝石，棕榈树干与绿洲水面在后"],
 title: "绿洲茶叙",
 cat: "portrait", catName: "人物系列",
-desc: "棕榈的影子落在毯上，\n葡萄在铜盘里发亮。\n她的辫子垂过腰际，\n金链子轻轻晃着。\n沙漠的风很远，\n这一小片绿洲很静。\n你说，\n她在等谁来喝茶呢？\n（提示词见作者自回复载体帖 2122220174032196033）",
+desc: "棕榈的影子落在毯上，\n葡萄在铜盘里发亮。\n她的辫子垂过腰际，\n金链子轻轻晃着。\n沙漠的风很远，\n这一小片绿洲很静。\n你说，\n她在等谁来喝茶呢？",
+note: "（提示词见作者自回复载体帖 2122220174032196033）",
 prompt: `Image generation prompt:
 A semi-realistic CG portrait with a soft painterly finish at half strength, luminous gloss and a light dreamy haze — a beautiful young woman in Persian desert dress reclining on a patterned rug at an oasis, seen from a slightly high angle. Palm fronds arch overhead, sand and the trunk of a date palm behind her, dappled sunlight falling across the scene. Her skin is a refined cool porcelain white, clean and flawless with no speckle noise, the colors balanced clean and neutral with no yellow cast.
 Her black hair is worn in one very long thick braid over her front shoulder, reaching past her waist, with loose strands framing her face. A small dark gem dot marks her forehead. Long gold chandelier earrings, and a layered gold necklace set with turquoise stones. Her gaze is direct and languid into the camera, lips in deep rose.
@@ -1018,7 +1070,8 @@ alt: "池边玉兰花下，黑发高髻金冠女子伸手轻触粉白玉兰，�
 alts: ["池边玉兰花下，黑发高髻金冠女子伸手轻触粉白玉兰，黑底玉兰刺绣抹胸配象牙金薄纱披袍，低木桌上青瓷茶具与玉兰画卷", "高角度俯视，女子俯身低木桌边，黑底玉兰抹胸与金腰封，桌上青瓷茶壶与一碗青梅，池水与花瓣环绕", "女子侧身坐于池边手捧青瓷茶杯，黑底玉兰抹胸与粉白长裙，桌上玉兰画卷与青瓷茶壶，玉兰枝垂落头顶"],
 title: "玉兰池边",
 cat: "portrait", catName: "人物系列",
-desc: "玉兰开在枝头，\n也落在她的衣上。\n池水把日光揉碎了，\n撒了满地花瓣。\n她搁下笔抬起头，\n像刚想起什么事。\n这一池春水，\n是为谁静的呢？\n（提示词见作者自回复载体帖 2122183774633132534）",
+desc: "玉兰开在枝头，\n也落在她的衣上。\n池水把日光揉碎了，\n撒了满地花瓣。\n她搁下笔抬起头，\n像刚想起什么事。\n这一池春水，\n是为谁静的呢？",
+note: "（提示词见作者自回复载体帖 2122183774633132534）",
 prompt: `Image generation prompt:
 A semi-realistic CG portrait with a soft painterly finish at half strength, luminous gloss and a light dreamy haze — a young Chinese beauty kneeling beside a low table at the edge of a pond under magnolia blossoms, seen from a high angle looking down at her. Dappled sunlight sparkles on the water and on her skin. Her skin is a refined cool porcelain white, clean and flawless with no speckle noise, the colors balanced clean and neutral with no yellow cast.
 Her black hair is gathered into a high bun crowned with a gold filigree hair ornament shaped like a small crown, gold leaf hairpins at the sides and one long dangling gold tassel; the rest of her hair falls in a long sheet down her back. A small red dot marks the center of her forehead. Fine gold drop earrings, and a delicate gold necklace with a red gemstone pendant and a small teardrop drop. Her face is lifted toward the camera, eyes looking up into the lens, glossy coral lips slightly parted.
@@ -1034,7 +1087,8 @@ width: 941, height: 1672,
 alt: "云海之上的金色宫阙与花树间，蓝粉渐变薄纱汉服女子侧身回望镜头，长发被风扬起，金线刺绣与粉色花朵缀满衣裙，腰束金色花饰腰封，头戴金色花冠与粉花步摇，身旁宫灯在云雾里发光",
 title: "云上宫阙",
 cat: "portrait", catName: "人物系列",
-desc: "云上的宫阙亮着灯，\n她站在花影里回头。\n蓝裙子缀满了金线，\n粉纱被风托起来，\n像一句没说完的梦。\n她眉间落了一点花粉，\n是刚从春天里走出来吗？\n（提示词见作者引用载体帖 2121939964778950678 全文＋续篇 2121939968843186284）",
+desc: "云上的宫阙亮着灯，\n她站在花影里回头。\n蓝裙子缀满了金线，\n粉纱被风托起来，\n像一句没说完的梦。\n她眉间落了一点花粉，\n是刚从春天里走出来吗？",
+note: "（提示词见作者引用载体帖 2121939964778950678 全文＋续篇 2121939968843186284）",
 prompt: `GPT image Prompt:
 
 A high-end 3D hyper-realistic CG portrait, cinematic Eastern fantasy editorial, vertical 9:20, UE5-quality rendering with ray tracing and PBR materials, surreal hyperrealism, luxury fantasy photography, ethereal and majestic mood.
@@ -1082,7 +1136,8 @@ alt: "白色哥特大厅的圣泉边，铂金白长发骑士公主身穿镜面�
 alts: ["白色哥特大厅的圣泉边，铂金白长发骑士公主身穿镜面银甲与白色荷叶边短纱裙，四肢着地跪在浅水边低头饮水，头戴嵌蓝宝石的尖刺银冠，一只铁手套平按在湿润的大理石地面上，水面映着淡淡倒影，第一图", "白色哥特大厅的圣泉边，铂金白长发骑士公主身穿银甲与白色荷叶边短纱裙跪伏水边低头饮水，头戴嵌蓝宝石的尖刺银冠，一只裸手轻按水边，水面清晰映出她闭目脸庞与银甲的倒影，水彩笔意更浓，第二图"],
 title: "圣泉边的骑士公主·Grok 版",
 cat: "portrait", catName: "人物系列",
-desc: "@grok 表现也不错。\n（Grok Imagine 生成；与 No.148 同一提示词，提示词见作者引用载体帖 2121641895164310014，本帖引用该载体帖）",
+desc: "@grok 表现也不错。",
+note: "（Grok Imagine 生成；与 No.148 同一提示词，提示词见作者引用载体帖 2121641895164310014，本帖引用该载体帖）",
 prompt: `Image generation prompt:
 A painterly semi-realistic fantasy illustration with soft visible brushwork and a high-key all-white palette: an adult knight princess, defeated and exhausted, drinking from a sacred shallow pool inside a white gothic hall. Vertical composition; her body runs diagonally from the upper right (hips high) down to the lower left (head bowed to the water).
 a young adult woman with very long platinum-white hair spreading over the floor and into the water's edge. She kneels on all fours on the pale marble floor at the pool's edge: knees grounded at frame right, one arm reaching forward with its flat open hand pressed on the wet marble at x 60–79%, y 61–70%, the other arm bent beside her head. Her back arches, her head bows deeply at x 0–63%, y 46–81% of the frame, face tilted down until her lips nearly touch the water, eyes closed with long lashes, cheeks flushed soft pink, the tip of her tongue just touching the water surface as she drinks. Exactly two arms, two hands, five fingers each; exactly two legs folded beneath her in armored greaves, pointed armored heels lifted behind.
@@ -1099,7 +1154,8 @@ width: 1122, height: 1402,
 alt: "白色哥特大厅的圣泉边，铂金白长发骑士公主身穿镜面银甲与白色荷叶边短纱裙，四肢着地跪在浅水边低头饮水，舌尖轻触水面，头戴尖刺银冠，一只铁手套平按在大理石池沿，水面映着淡淡倒影",
 title: "圣泉边的骑士公主",
 cat: "portrait", catName: "人物系列",
-desc: "复刻了一下。\n（复刻 @uki_hajime 骑士公主原帖 2121386693072990326；提示词见作者引用载体帖 2121641895164310014）",
+desc: "复刻了一下。",
+note: "（复刻 @uki_hajime 骑士公主原帖 2121386693072990326；提示词见作者引用载体帖 2121641895164310014）",
 prompt: `Image generation prompt:
 A painterly semi-realistic fantasy illustration with soft visible brushwork and a high-key all-white palette: an adult knight princess, defeated and exhausted, drinking from a sacred shallow pool inside a white gothic hall. Vertical composition; her body runs diagonally from the upper right (hips high) down to the lower left (head bowed to the water).
 a young adult woman with very long platinum-white hair spreading over the floor and into the water's edge. She kneels on all fours on the pale marble floor at the pool's edge: knees grounded at frame right, one arm reaching forward with its flat open hand pressed on the wet marble at x 60–79%, y 61–70%, the other arm bent beside her head. Her back arches, her head bows deeply at x 0–63%, y 46–81% of the frame, face tilted down until her lips nearly touch the water, eyes closed with long lashes, cheeks flushed soft pink, the tip of her tongue just touching the water surface as she drinks. Exactly two arms, two hands, five fingers each; exactly two legs folded beneath her in armored greaves, pointed armored heels lifted behind.
@@ -1135,7 +1191,8 @@ width: 1672, height: 941,
 alt: "复古木质酒吧里，银金发女子戴黑色兔耳、穿黑色缎面兔女郎装与大网眼鱼网袜，交叠长腿坐在深棕皮质翼背扶手椅上，白手套一手近肩、一手搭扶手，身后是酒柜与暖黄灯光",
 title: "让我和你喝几杯吧",
 cat: "portrait", catName: "人物系列",
-desc: "让我和你喝几杯吧。\n（提示词来自 @AIjee_tpe 原帖 2121422605957951573 的自回复 Ref. Prompt；本图为作者用该提示词生成的版本）",
+desc: "让我和你喝几杯吧。",
+note: "（提示词来自 @AIjee_tpe 原帖 2121422605957951573 的自回复 Ref. Prompt；本图为作者用该提示词生成的版本）",
 prompt: `## **[Subject Description]**
 
 A photorealistic, full-body fashion cosplay portrait of an elegant adult woman with fair, smooth skin, naturally full breasts,S-shaped female figure,  and long, shapely legs. She has delicate facial features, expressive eyes, softly defined eyebrows, and naturally rosy lips. Her light silver-blonde hair is styled in a loosely tied-up hairstyle with soft, wispy bangs framing her face. She wears a pair of glossy black bunny ears attached to a headband.
@@ -4927,6 +4984,7 @@ The oversized moon sphere emits a warm ivory-gold glow, showing realistic crater
         }
         lbCount.textContent = current + 1 + " / " + WORKS.length;
         lbScroll.scrollTop = 0;
+        try { history.replaceState(null, "", "#no-" + (WORKS.length - current)); } catch (e) {}
       }
       function openLb(i, trigger) {
         lastFocus = trigger || document.activeElement;
@@ -4938,6 +4996,7 @@ The oversized moon sphere emits a warm ivory-gold glow, showing realistic crater
       function closeLb() {
         lb.classList.remove("open");
         document.body.style.overflow = "";
+        try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
         if (lastFocus) lastFocus.focus();
       }
       document.querySelectorAll("[data-open]").forEach(function (el) {
@@ -4967,6 +5026,66 @@ The oversized moon sphere emits a warm ivory-gold glow, showing realistic crater
       }
       lbCopy.addEventListener("click", function () { copyPrompt(lbCopy); });
       lbCopyTop.addEventListener("click", function () { copyPrompt(lbCopyTop); });
+
+      /* ---------- 单幅深链：复制本幅链接 ---------- */
+      var lbCopyLink = document.getElementById("lbCopyLink");
+      function copyLink(btn) {
+        var url = location.href;
+        function done() {
+          btn.textContent = "✓ 已复制";
+          setTimeout(function () { btn.textContent = "复制本幅链接"; }, 1600);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(done, function () { fallback(); });
+        } else { fallback(); }
+        function fallback() {
+          var ta = document.createElement("textarea");
+          ta.value = url;
+          ta.style.position = "fixed"; ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand("copy"); done(); } catch (e) {}
+          document.body.removeChild(ta);
+        }
+      }
+      lbCopyLink.addEventListener("click", function () { copyLink(lbCopyLink); });
+
+      /* ---------- 单幅深链：带锚点打开页面时直达该幅 ---------- */
+      var hashMatch = /^#no-(\d+)$/.exec(location.hash || "");
+      if (hashMatch) {
+        var hashNo = parseInt(hashMatch[1], 10);
+        if (hashNo >= 1 && hashNo <= WORKS.length) openLb(WORKS.length - hashNo, null);
+      }
+
+      /* ---------- 展厅搜索 ---------- */
+      var searchInput = document.getElementById("searchInput");
+      var searchEmpty = document.getElementById("searchEmpty");
+      var galleryNote = document.getElementById("galleryNote");
+      var noteDefault = galleryNote ? galleryNote.innerHTML : "";
+      searchInput.addEventListener("input", function () {
+        var raw = searchInput.value.trim();
+        var q = raw.toLowerCase();
+        if (!q) {
+          for (var k = 0; k < grid.children.length; k++) grid.children[k].style.display = "";
+          searchEmpty.hidden = true;
+          if (galleryNote) galleryNote.innerHTML = noteDefault;
+          return;
+        }
+        var found = 0;
+        WORKS.forEach(function (w, i) {
+          var hay = (w.title + "\n" + (w.desc || "") + "\n" + (w.alt || "")).toLowerCase();
+          var hit = hay.indexOf(q) !== -1;
+          if (grid.children[i]) grid.children[i].style.display = hit ? "" : "none";
+          if (hit) found++;
+        });
+        if (galleryNote) galleryNote.textContent = "找到 " + found + " 幅 · 关键词「" + raw + "」";
+        if (found === 0) {
+          searchEmpty.textContent = "没有找到「" + raw + "」——换个词试试，或清空搜索看全部。";
+          searchEmpty.hidden = false;
+        } else {
+          searchEmpty.hidden = true;
+        }
+      });
       document.getElementById("lbClose").addEventListener("click", closeLb);
       document.getElementById("lbPrev").addEventListener("click", function () { show(current - 1); });
       document.getElementById("lbNext").addEventListener("click", function () { show(current + 1); });
