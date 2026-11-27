@@ -95,6 +95,20 @@
       ::selection { background: color-mix(in srgb, var(--cinnabar) 26%, transparent); }
       :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
+      /* 跳过链接：平时藏在页顶上方，键盘聚焦时滑入 */
+      .skip-link {
+        position: absolute; left: 14px; top: -64px; z-index: 200;
+        padding: 9px 16px; border-radius: 2px;
+        background: var(--lacquer); color: var(--lacquer-ink);
+        border: 1px solid var(--gold);
+        font-family: "Noto Serif SC", "Songti SC", serif; font-size: 13px; font-weight: 700; letter-spacing: 0.14em;
+        text-decoration: none; transition: top 0.18s ease;
+      }
+      .skip-link:focus-visible { top: 10px; outline: 2px solid var(--gold); outline-offset: 2px; }
+      #galleryTitle { scroll-margin-top: 72px; }
+      /* 按钮内联线条图标：随文字颜色、与字号对齐 */
+      svg.ic { width: 1em; height: 1em; flex: none; }
+
       .serif { font-family: "Noto Serif SC", "Songti SC", serif; }
       h1, h2, h3 { text-wrap: balance; }
       p { text-wrap: pretty; }
@@ -217,7 +231,9 @@
         .hero {
           display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(300px, 0.88fr);
           column-gap: clamp(40px, 5vw, 72px);
+          padding-top: 16px; padding-bottom: 4px;
         }
+        .hero .over { margin-bottom: 10px; }
         .hero .over { grid-column: 1 / -1; }
         .hero h1 { align-self: start; }
         .hero-sub { margin-top: 0; align-self: start; justify-self: end; }
@@ -244,7 +260,7 @@
       .sec-head h2 { margin: 0; font-family: "Noto Serif SC", serif; font-weight: 900; font-size: clamp(22px, 3.4vw, 29px); line-height: 1.15; white-space: nowrap; }
       .sec-head .en { font-size: 10.5px; font-weight: 700; letter-spacing: 0.3em; color: var(--gold); white-space: nowrap; }
       .sec-head .rule { flex: 1; height: 1px; background: var(--line-strong); align-self: center; }
-      .sec-head .note { color: var(--ink-3); font-size: 12px; line-height: 1.6; letter-spacing: 0.04em; }
+      .sec-head .note { color: var(--ink-3); font-size: 12px; line-height: 1.6; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
       .sec-head .note b { color: var(--cinnabar); font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 13.5px; }
 
       /* ---------- 展厅搜索 ---------- */
@@ -280,6 +296,7 @@
         margin: 0; background: var(--panel); height: 100%;
         display: flex; flex-direction: column;
         border: 1px solid var(--line); padding: 6px 6px 0; box-shadow: var(--shadow-sm);
+        content-visibility: auto; contain-intrinsic-size: auto 320px 640px;
       }
       @media (hover: hover) {
         .card { transition: box-shadow 0.3s ease; }
@@ -288,10 +305,10 @@
         .card .imgbtn { overflow: hidden; }
         .card:hover img { transform: scale(1.02); }
       }
-      .card img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 28%; }
+      .card img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 28%; color: transparent; font-size: 0; }
       .card .plaque { padding: 14px 6px 15px; }
       .card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 9px; }
-      .card .no { font-family: "Noto Serif SC", serif; font-weight: 600; font-size: 14px; letter-spacing: 0.22em; color: var(--ink-3); }
+      .card .no { font-family: "Noto Serif SC", serif; font-weight: 600; font-size: 14px; letter-spacing: 0.22em; color: var(--ink-3); font-variant-numeric: tabular-nums; }
       .seal-mini {
         flex: none; width: 27px; height: 27px; display: grid; place-items: center;
         background: linear-gradient(150deg, color-mix(in srgb, var(--seal) 88%, #fff 6%), var(--seal) 55%, var(--cinnabar-deep));
@@ -396,7 +413,7 @@
         padding: max(10px, env(safe-area-inset-top)) 14px 10px;
         border-bottom: 1px solid rgba(240, 230, 205, 0.14);
       }
-      .lb-bar .count { font-family: "Noto Serif SC", serif; font-weight: 600; font-size: 13.5px; letter-spacing: 0.22em; color: #a99e83; white-space: nowrap; }
+      .lb-bar .count { font-family: "Noto Serif SC", serif; font-weight: 600; font-size: 13.5px; letter-spacing: 0.22em; color: #a99e83; white-space: nowrap; font-variant-numeric: tabular-nums; }
       .lb-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
       .lb-btn {
         display: inline-flex; align-items: center; justify-content: center; gap: 5px;
@@ -414,7 +431,7 @@
         gap: clamp(24px, 4vw, 48px); align-items: start;
       }
       .lb-imgwrap { position: sticky; top: 0; }
-      .lb-imgs { display: flex; gap: 8px; margin-top: 10px; }
+      .lb-imgs { display: flex; gap: 8px; margin-top: 10px; font-variant-numeric: tabular-nums; }
       .lb-imgs[hidden] { display: none; }
       .lb-imgs .lb-btn.on { background: #dcba67; border-color: #dcba67; color: #241a05; font-weight: 700; }
       /* 多图翻页：箭头按钮全端隐藏，统一靠点图片左右区域翻页（下方图号按钮亦可切换） */
@@ -454,7 +471,7 @@
       }
       .lightbox img {
         width: 100%; max-height: calc(100dvh - 168px); object-fit: contain;
-        background: #171208;
+        background: #171208; color: transparent; font-size: 0;
         box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
       }
       .lightbox figure.wide { grid-template-columns: 1fr; width: min(880px, 100%); }
@@ -491,7 +508,7 @@
         .brand .mark { font-size: 14.5px; letter-spacing: 0.13em; }
         .menu-btn { min-height: 28px; padding: 4px 9px; font-size: 11.5px; }
         .menu-panel { min-width: 152px; }
-        .grid { grid-template-columns: 1fr; gap: 14px; }
+        .grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
         .card { padding: 5px 5px 0; }
         .card .plaque { padding: 10px 3px 12px; }
         .card-top { margin-bottom: 6px; }
@@ -516,10 +533,12 @@
         .menu-btn .chev { transition: none; }
         .card img { transition: none; }
         .lb-arrow { transition: none; }
+        .skip-link { transition: none; }
       }
     </style>
   </head>
   <body>
+    <a class="skip-link" href="#galleryTitle">跳到展厅</a>
     <header class="masthead">
       <div class="bar wrap">
         <a class="brand" href="#top" aria-label="回到卷首">
@@ -561,7 +580,7 @@
 
     <main class="gallery-wrap wrap" id="exhibition">
       <div class="sec-head rv">
-        <h2>展厅</h2>
+        <h2 id="galleryTitle" tabindex="-1">展厅</h2>
         <span class="en">THE COLLECTION</span>
         <span class="rule"></span>
         <span class="note" id="galleryNote">在展作品 <b id="workCount">5</b> 幅 · 全部来自 X 帖子 · 每幅附原帖与提示词</span>
@@ -612,7 +631,7 @@
       <div class="lb-bar">
         <span class="count" id="lbCount"></span>
         <div class="lb-actions">
-          <a class="lb-btn accent" id="lbPost" href="#" target="_blank" rel="noopener noreferrer">🔗 原帖 ↗</a>
+          <a class="lb-btn accent" id="lbPost" href="#" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7.1 0l2.4-2.4a5 5 0 0 0-7.1-7.1L11 5.9"/><path d="M14 10a5 5 0 0 0-7.1 0L4.5 12.4a5 5 0 0 0 7.1 7.1L13 18.1"/></svg>原帖 ↗</a>
           <a class="lb-btn" id="lbDownload" href="#" download>下载原图</a>
           <button class="lb-btn" type="button" id="lbClose">关闭 ✕</button>
         </div>
@@ -637,9 +656,9 @@
             <div class="t" id="lbTitle"></div>
             <div class="d" id="lbDesc"></div>
             <div class="lb-btns">
-              <a class="lb-btn accent" id="lbPost2" href="#" target="_blank" rel="noopener noreferrer">🔗 在 X 查看原帖 ↗</a>
-              <button class="lb-btn" type="button" id="lbCopyTop">📝 复制提示词</button>
-              <button class="lb-btn" type="button" id="lbCopyLink">复制本幅链接</button>
+              <a class="lb-btn accent" id="lbPost2" href="#" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7.1 0l2.4-2.4a5 5 0 0 0-7.1-7.1L11 5.9"/><path d="M14 10a5 5 0 0 0-7.1 0L4.5 12.4a5 5 0 0 0 7.1 7.1L13 18.1"/></svg>在 X 查看原帖 ↗</a>
+              <button class="lb-btn" type="button" id="lbCopyTop"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2.5H6a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8.5z"/><path d="M14 2.5v6h6"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>复制提示词</button>
+              <button class="lb-btn" type="button" id="lbCopyLink"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7.1 0l2.4-2.4a5 5 0 0 0-7.1-7.1L11 5.9"/><path d="M14 10a5 5 0 0 0-7.1 0L4.5 12.4a5 5 0 0 0 7.1 7.1L13 18.1"/></svg>复制本幅链接</button>
             </div>
             <div class="lb-nav">
               <button class="lb-btn" type="button" id="lbPrev">← 上一幅</button>
@@ -649,7 +668,7 @@
               <div class="prompt-label">提示词 · PROMPT</div>
               <div class="prompt-text" id="lbPrompt"></div>
               <p class="prompt-none" id="lbPromptNone" hidden>暂无提示词——这幅作品的提示词暂未收录，取到后会在这里全文公开。</p>
-              <button class="copy-big" type="button" id="lbCopy">📝 复制提示词</button>
+              <button class="copy-big" type="button" id="lbCopy"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2.5H6a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8.5z"/><path d="M14 2.5v6h6"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>复制提示词</button>
             </div>
           </figcaption>
         </figure>
@@ -4917,6 +4936,8 @@ The oversized moon sphere emits a warm ivory-gold glow, showing realistic crater
       function thumbSrc(s) {
         return "img/th/" + s.split("/").pop().replace(/\.[^.]+$/, ".jpg");
       }
+      var ICON_LINK = '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7.1 0l2.4-2.4a5 5 0 0 0-7.1-7.1L11 5.9"/><path d="M14 10a5 5 0 0 0-7.1 0L4.5 12.4a5 5 0 0 0 7.1 7.1L13 18.1"/></svg>';
+      var ICON_DOC = '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2.5H6a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8.5z"/><path d="M14 2.5v6h6"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>';
       WORKS.forEach(function (w, i) {
         var num = String(WORKS.length - i).padStart(2, "0");
         var fullDesc = (w.desc || "").replace(/\s+/g, " ").trim();
@@ -4928,7 +4949,7 @@ The oversized moon sphere emits a warm ivory-gold glow, showing realistic crater
         card.style.setProperty("--d", (i % 2) * 0.08 + "s");
         card.innerHTML =
           '<button type="button" class="imgbtn" data-open="' + i + '" aria-label="放大查看《' + w.title + '》">' +
-          '<img src="' + thumbSrc(w.src) + '" alt="' + w.alt + '" width="' + (w.width || 1024) + '" height="' + (w.height || 1536) + '" loading="lazy" decoding="async" />' +
+          '<img src="' + thumbSrc(w.src) + '" alt="' + w.alt + '" width="' + (w.width || 1024) + '" height="' + (w.height || 1536) + '"' + (i < 3 ? ' loading="eager" fetchpriority="high"' : ' loading="lazy"') + ' decoding="async" />' +
           "</button>" +
           '<figcaption class="plaque"><span class="card-top"><span class="no">No.' + num + '</span>' +
           '<span class="seal-mini" aria-hidden="true">' + w.title.charAt(0) + '</span></span>' +
@@ -4936,8 +4957,8 @@ The oversized moon sphere emits a warm ivory-gold glow, showing realistic crater
           '<span class="cat">' + w.catName + '</span>' +
           '<span class="d">' + descHtml + "</span>" +
           '<span class="btn-row">' +
-          '<a class="btn btn-post" href="' + w.post + '" target="_blank" rel="noopener noreferrer">🔗 原帖链接 ↗</a>' +
-          '<button class="btn btn-prompt" type="button" data-open="' + i + '">📝 提示词</button>' +
+          '<a class="btn btn-post" href="' + w.post + '" target="_blank" rel="noopener noreferrer">' + ICON_LINK + '原帖链接 ↗</a>' +
+          '<button class="btn btn-prompt" type="button" data-open="' + i + '">' + ICON_DOC + '提示词</button>' +
           "</span></figcaption>";
         var cardImg = card.querySelector("img");
         cardImg.addEventListener("error", function () {
@@ -4959,6 +4980,7 @@ The oversized moon sphere emits a warm ivory-gold glow, showing realistic crater
       var lbDownload = document.getElementById("lbDownload");
       var lbCopy = document.getElementById("lbCopy");
       var lbCopyTop = document.getElementById("lbCopyTop");
+      var lbCopyLink = document.getElementById("lbCopyLink");
       var lbPost = document.getElementById("lbPost");
       var lbPost2 = document.getElementById("lbPost2");
       var lbImgs = document.getElementById("lbImgs");
@@ -5047,9 +5069,10 @@ The oversized moon sphere emits a warm ivory-gold glow, showing realistic crater
       function copyPrompt(btn) {
         var text = WORKS[current].prompt;
         if (!text) return;
+        var origHtml = btn.innerHTML;
         function done() {
           btn.textContent = "✓ 已复制";
-          setTimeout(function () { btn.textContent = "📝 复制提示词"; }, 1600);
+          setTimeout(function () { btn.innerHTML = origHtml; }, 1600);
         }
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(text).then(done, function () { fallback(); });
@@ -5066,29 +5089,25 @@ The oversized moon sphere emits a warm ivory-gold glow, showing realistic crater
       }
       lbCopy.addEventListener("click", function () { copyPrompt(lbCopy); });
       lbCopyTop.addEventListener("click", function () { copyPrompt(lbCopyTop); });
-
-      /* ---------- 单幅深链：复制本幅链接 ---------- */
-      var lbCopyLink = document.getElementById("lbCopyLink");
-      function copyLink(btn) {
-        var url = location.href;
+      lbCopyLink.addEventListener("click", function () {
+        var origHtml = lbCopyLink.innerHTML;
         function done() {
-          btn.textContent = "✓ 已复制";
-          setTimeout(function () { btn.textContent = "复制本幅链接"; }, 1600);
+          lbCopyLink.textContent = "✓ 已复制";
+          setTimeout(function () { lbCopyLink.innerHTML = origHtml; }, 1600);
         }
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(url).then(done, function () { fallback(); });
-        } else { fallback(); }
         function fallback() {
           var ta = document.createElement("textarea");
-          ta.value = url;
+          ta.value = location.href;
           ta.style.position = "fixed"; ta.style.opacity = "0";
           document.body.appendChild(ta);
           ta.select();
-          try { document.execCommand("copy"); done(); } catch (e) {}
+          try { if (document.execCommand("copy")) done(); } catch (e) {}
           document.body.removeChild(ta);
         }
-      }
-      lbCopyLink.addEventListener("click", function () { copyLink(lbCopyLink); });
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(location.href).then(done, function () { fallback(); });
+        } else { fallback(); }
+      });
 
       /* ---------- 单幅深链：带锚点打开页面时直达该幅 ---------- */
       var hashMatch = /^#no-(\d+)$/.exec(location.hash || "");
